@@ -5,14 +5,15 @@ import java.util.Scanner;
 
 
 public class RLE {
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws IOException {
+        File path=new File("C:/Users/Priyanshu/Downloads/decompressed.txt");
+        compress(path);
 
     }
-    public void compress(File file) throws IOException {
+    public static void compress(File file) throws IOException {
         String filedirectory= file.getParent();
         FileInputStream fis=new FileInputStream(file);
-        FileOutputStream fos=new FileOutputStream(filedirectory+"compressed.txt");
+        FileOutputStream fos=new FileOutputStream("compressed.txt");
         String in="";
         int i;
         while((i=fis.read())!=-1){
@@ -40,29 +41,50 @@ public class RLE {
             counter += 1;
         }
         k[count] = (num + ":" + a[counter - 1] + "/");
-        for(String i : k){
-            if(i!=null)str+=i;
+        for(String stri : k){
+            if(stri!=null)str+=stri;
         }
-
-
+        for(int ii=0;ii<str.length();ii++){
+            fos.write(str.charAt(ii));
+        }
+        fis.close();
+        fos.close();
     }
 
-    public void decompress(File file) throws IOException {
+    public static void decompress(File file) throws IOException {
         String filedirectory= file.getParent();
         FileInputStream fis=new FileInputStream(file);
-        FileOutputStream fos=new FileOutputStream(filedirectory+"decompressed.txt");
+        FileOutputStream fos=new FileOutputStream("decompressed.txt");
         String in="";
         int i;
         while((i=fis.read())!=-1){
             in=in+(char)i;
         }
         String[] arrOfStr = in.split("/");
-        ArrayList<Character> k=new ArrayList<>();
+        ArrayList<String> k=new ArrayList<>();
         for(String j:arrOfStr){
-            k.add(j.split(":"))
+            String[] temp=j.split(":");
+
+            k.add(temp[0]+temp[1]);
 
         }
+        String str="";
+        for(String j:k){
+            for(int ii=0;ii<j.charAt(0)%48;ii++){
+                str=str+j.charAt(1);
 
+            }
+//            System.out.println(j.charAt(0));
+
+        }
+        for(int ii=0;ii<str.length();ii++){
+            fos.write(str.charAt(ii));
+//            System.out.println((char) str.charAt(ii));
+        }
+
+        fis.close();
+        fos.close();
 
     }
+
 }
